@@ -7,7 +7,7 @@ export const useAnalytics = () => {
     browser: 'Loading...',
     os: 'Loading...',
     deviceType: 'desktop',
-    screenResolution: `${window.screen.width}x${window.screen.height}`,
+    screenResolution: `${window.innerWidth}x${window.innerHeight}`,
     location: {
       country: 'Loading...',
       city: 'Loading...',
@@ -77,7 +77,7 @@ export const useAnalytics = () => {
     }));
 
     // 5. Geolocation using Axios
-    axios.get('https://freeipapi.com/api/json')
+    axios.get('http://ip-api.com/json/')
       .then(response => {
         const geo = response.data;
         setData(prev => ({
@@ -109,13 +109,23 @@ export const useAnalytics = () => {
     };
     window.addEventListener('scroll', handleScroll);
 
-    // 7. Time Spent
+    // 7. Resize Listener (Live Resolution)
+    const handleResize = () => {
+      setData(prev => ({
+        ...prev,
+        screenResolution: `${window.innerWidth}x${window.innerHeight}`,
+      }));
+    };
+    window.addEventListener('resize', handleResize);
+
+    // 8. Time Spent
     const timer = setInterval(() => {
       setData(prev => ({ ...prev, timeSpent: prev.timeSpent + 1 }));
     }, 1000);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
       clearInterval(timer);
     };
   }, []);
