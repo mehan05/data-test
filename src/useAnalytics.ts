@@ -77,7 +77,7 @@ export const useAnalytics = () => {
     }));
 
     // 5. Geolocation using Axios
-    axios.get('http://ip-api.com/json/')
+    axios.get('https://freeipapi.com/api/json')
       .then(response => {
         const geo = response.data;
         setData(prev => ({
